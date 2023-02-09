@@ -17,13 +17,17 @@ class MovieDetails extends StatelessWidget {
       return ListTile(title: Text(title), subtitle: Text(subtitle));
     }
 
-    final movieDetails = Column(
-      children: [
-        detailTile(title: "Release Date", subtitle: movie.Released),
-        detailTile(
-            title: "Rotten Tomatoes Rating", subtitle: rottenTomatoesRating),
-        detailTile(title: "Movie Plot", subtitle: movie.Plot),
-      ],
+    final movieDetails = Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            detailTile(title: "Release Date", subtitle: movie.Released),
+            detailTile(
+                title: "Rotten Tomatoes Rating", subtitle: rottenTomatoesRating),
+            detailTile(title: "Movie Plot", subtitle: movie.Plot),
+          ],
+        ),
+      ),
     );
 
     return Scaffold(

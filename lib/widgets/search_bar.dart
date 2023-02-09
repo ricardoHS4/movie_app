@@ -17,6 +17,7 @@ class SearchBar extends StatelessWidget {
         const SizedBox(height: 8),
         TextField(
           controller: serachBarController,
+          autofocus: false,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             suffixIcon: const Icon(Icons.search),
