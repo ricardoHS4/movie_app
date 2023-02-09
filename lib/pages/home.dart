@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/model/movie.dart';
+import 'package:movie_app/pages/movie_details.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,7 +12,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String errorText = "";
   final serachBarController = TextEditingController();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +35,24 @@ class _HomeState extends State<Home> {
     );
 
     final searchButton = ElevatedButton(
-      onPressed: () {
-        setState(() {
-          if(serachBarController.text == ""){
-            errorText = "Please enter a name";
+      onPressed: () async {
+        if (serachBarController.text == "") {
+          errorText = "Please enter a name";
+        } else {
+          String APIurl =
+              "http://www.omdbapi.com/?apikey=297bfd4b&t=${serachBarController.text}";
+          Movie movie = await getMovieFromAPI(APIurl);
+          if (movie.Response == "False") {
+            errorText = movie.Error;
           } else {
             errorText = "";
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MovieDetails(movie: movie)),
+            );
           }
-        });
+        }
+        setState(() {});
       },
       child: const Text("Search movie"),
     );
