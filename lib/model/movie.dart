@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+//Class to store the relevant info from the movie maps provided by the API
 class Movie {
   String Response;
   String Title;
@@ -39,7 +40,7 @@ class Movie {
         'Plot': Plot,
         'Error': Error,
       };
-
+  //Function to look at the ratings list and return the Rotten Tomatoes Rating if it exists.
   String getRottenTomatoesRating() {
     String rating = "N/A";
     for (int x = 0; x < Ratings.length; x++) {
@@ -51,6 +52,7 @@ class Movie {
   }
 }
 
+//Function to retreive data from API and transform it in a 'Movie object
 Future<Movie> getMovieFromAPI(String APIurl) async {
   var url = Uri.parse(APIurl);
   http.Response response = await http.get(url);

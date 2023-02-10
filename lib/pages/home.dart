@@ -22,19 +22,24 @@ class _HomeState extends State<Home> {
 
     final searchButton = ElevatedButton(
       onPressed: () async {
+        //Check if search bar has text
         if (serachBarController.text == "") {
           errorText = "Please enter a name";
         } else {
           String APIurl =
-              "http://www.omdbapi.com/?apikey=297bfd4b&t=${serachBarController.text}";
+              "https://www.omdbapi.com/?apikey=297bfd4b&t=${serachBarController.text}";
           Movie movie = await getMovieFromAPI(APIurl);
+          //Once data is retreived from the API, we check if response was valid, otherwise, we show the error to the user
           if (movie.Response == "False") {
             errorText = movie.Error;
           } else {
+            //Clear error message
             errorText = "";
+            //Add valid retreived data to the local storage so we can then show it in the history
             final id = db.collection('search_history').doc().id;
             db.collection('search_history').doc(id).set(movie.toJson());
 
+            //Open Movie Details page with our retreived object as a parameter
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -46,7 +51,7 @@ class _HomeState extends State<Home> {
       },
       child: const Text("Search movie"),
     );
-
+  
     return Scaffold(
       appBar: AppBar(title: const Text("MOVIE DETAILS APP"), centerTitle: true),
       body: Padding(

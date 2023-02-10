@@ -11,6 +11,7 @@ class SearchHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Button to clear the history saved locally
     final clearHistoryButton = ElevatedButton(
       onPressed: () async {
         await db.collection("search_history").delete();
@@ -22,6 +23,7 @@ class SearchHistory extends StatelessWidget {
       child: const Text("Clear history"),
     );
 
+    //Single tile that shows title and image from ta movie object
     Widget movieHistoryTile(Movie movie) {
       return ListTile(
         title: Text(movie.Title),
@@ -36,6 +38,7 @@ class SearchHistory extends StatelessWidget {
       );
     }
 
+    //Future function that returns an scrollable Column that contains all the search hitory cards and a button to clear the history
     Future<Widget> searchHistoryFuture() async {
       final items = await db.collection('search_history').get();
       List<Movie> movieHistory = [];
@@ -67,6 +70,7 @@ class SearchHistory extends StatelessWidget {
       return SingleChildScrollView(child: Column(children: historyMovieTiles));
     }
 
+    //Widget that shows a circular progress indicator until the history content is loaded
     Widget searchHistoryContent() {
       return FutureBuilder(
         future: searchHistoryFuture(),
