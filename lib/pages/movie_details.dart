@@ -10,7 +10,14 @@ class MovieDetails extends StatelessWidget {
     String rottenTomatoesRating = movie.getRottenTomatoesRating();
 
     final moviePoster = Container(
-      child: Center(child: Image.network(movie.Poster)),
+      child: Center(
+          child: Image.network(
+        movie.Poster,
+        errorBuilder: (context, error, stackTrace) {
+          return const Text("\nPoster is not available",
+              style: TextStyle(fontWeight: FontWeight.bold));
+        },
+      )),
     );
 
     Widget detailTile({required String title, required String subtitle}) {
@@ -23,7 +30,8 @@ class MovieDetails extends StatelessWidget {
           children: [
             detailTile(title: "Release Date", subtitle: movie.Released),
             detailTile(
-                title: "Rotten Tomatoes Rating", subtitle: rottenTomatoesRating),
+                title: "Rotten Tomatoes Rating",
+                subtitle: rottenTomatoesRating),
             detailTile(title: "Movie Plot", subtitle: movie.Plot),
           ],
         ),
