@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:localstore/localstore.dart';
 import 'package:movie_app/model/movie.dart';
 
 class MovieDetails extends StatelessWidget {
   Movie movie;
-  MovieDetails({Key? key, required this.movie}) : super(key: key);
+  Function setStateFunction;
+
+  MovieDetails({Key? key, required this.movie, required this.setStateFunction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +31,11 @@ class MovieDetails extends StatelessWidget {
       children: [
         detailTile(title: "Release Date", subtitle: movie.Released),
         detailTile(
-            title: "Rotten Tomatoes Rating",
-            subtitle: rottenTomatoesRating),
+            title: "Rotten Tomatoes Rating", subtitle: rottenTomatoesRating),
         detailTile(title: "Movie Plot", subtitle: movie.Plot),
       ],
     );
+
 
     return Scaffold(
       appBar: AppBar(title: Text(movie.Title)),

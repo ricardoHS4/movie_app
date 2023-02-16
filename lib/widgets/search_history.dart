@@ -20,7 +20,7 @@ class SearchHistory extends StatelessWidget {
       style: ButtonStyle(
           backgroundColor:
               MaterialStateProperty.all(const Color.fromARGB(255, 192, 13, 0))),
-      child: const Text("Clear history"),
+      child: const Text("Clear all history"),
     );
 
     //Single tile that shows title and image from ta movie object
@@ -28,11 +28,15 @@ class SearchHistory extends StatelessWidget {
       return ListTile(
         title: Text(movie.Title),
         leading: CircleAvatar(backgroundImage: NetworkImage(movie.Poster)),
-        trailing: const Icon(Icons.arrow_forward),
+        trailing: IconButton(
+            onPressed: () => deletFromHistory(movie),
+            icon: const Icon(Icons.cancel)),
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MovieDetails(movie: movie)),
+            MaterialPageRoute(
+                builder: (context) => MovieDetails(
+                    movie: movie, setStateFunction: setStateFunction)),
           );
         },
       );
@@ -103,5 +107,21 @@ class SearchHistory extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  deletFromHistory(Movie movie) async {
+    final items =
+        await db.collection('search_history').get() as Map<dynamic, dynamic>;
+    List<String> keysToDelete = [];
+    items.forEach((key, value) {
+      Movie movieTemp = Movie.fromJson(value);
+      if (movieTemp.Title == movie.Title) {
+        keysToDelete.add(key);
+      }
+    });
+    for (int x = 0; x < keysToDelete.length; x++) {
+      db.collection('search_history').doc(keysToDelete[x]).delete();
+    }
+    setStateFunction();
   }
 }

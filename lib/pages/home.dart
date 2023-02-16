@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/api_movies.dart';
 import 'package:movie_app/model/movie.dart';
 import 'package:movie_app/pages/movie_details.dart';
 import 'package:localstore/localstore.dart';
@@ -35,6 +36,7 @@ class _HomeState extends State<Home> {
           } else {
             //Clear error message
             errorText = "";
+            serachBarController.text = "";
             //Add valid retreived data to the local storage so we can then show it in the history
             final id = db.collection('search_history').doc().id;
             db.collection('search_history').doc(id).set(movie.toJson());
@@ -43,7 +45,12 @@ class _HomeState extends State<Home> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MovieDetails(movie: movie)),
+                  builder: (context) => MovieDetails(
+                        movie: movie,
+                        setStateFunction: () {
+                          setState(() {});
+                        },
+                      )),
             );
           }
         }
@@ -51,7 +58,7 @@ class _HomeState extends State<Home> {
       },
       child: const Text("Search movie"),
     );
-  
+
     return Scaffold(
       appBar: AppBar(title: const Text("MOVIE DETAILS APP"), centerTitle: true),
       body: Padding(
